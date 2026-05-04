@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; font-family: 'Space Grotesk', sans-serif; padding: 24px; }
+  .grid { display: flex; flex-direction: column; gap: 16px; }
+  .palette { display: flex; gap: 0; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+  .swatch { flex: 1; height: 72px; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 10px; }
+  .swatch-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; }
+  .swatch-value { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.05em; margin-top: 2px; }
+  .palette-name { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
+  .palette-row { display: flex; flex-direction: column; }
+</style>
+</head>
+<body>
+<div class="grid">
+
+  <div class="palette-row">
+    <div class="palette-name">Midnight Lime — default</div>
+    <div class="palette">
+      <div class="swatch" style="background:#0e1016; flex:2;">
+        <div class="swatch-label" style="color:#f0f0ee;">BG</div>
+        <div class="swatch-value" style="color:#f0f0ee;">#0e1016</div>
+      </div>
+      <div class="swatch" style="background:#f0f0ee; flex:1;">
+        <div class="swatch-label" style="color:#0e1016;">FG</div>
+        <div class="swatch-value" style="color:#0e1016;">#f0f0ee</div>
+      </div>
+      <div class="swatch" style="background:#c8f135; flex:1;">
+        <div class="swatch-label" style="color:#0e1016;">ACCENT</div>
+        <div class="swatch-value" style="color:#0e1016;">#c8f135</div>
+      </div>
+      <div class="swatch" style="background:rgba(200,241,53,0.2); flex:1;">
+        <div class="swatch-label" style="color:#c8f135;">DIM</div>
+        <div class="swatch-value" style="color:#c8f135;">20%</div>
+      </div>
+      <div class="swatch" style="background:rgba(200,241,53,0.06); flex:1;">
+        <div class="swatch-label" style="color:#c8f135;">GHOST</div>
+        <div class="swatch-value" style="color:#c8f135;">6%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="palette-row">
+    <div class="palette-name">Navy Electric</div>
+    <div class="palette">
+      <div class="swatch" style="background:#060c24; flex:2;">
+        <div class="swatch-label" style="color:#eef2ff;">BG</div>
+        <div class="swatch-value" style="color:#eef2ff;">#060c24</div>
+      </div>
+      <div class="swatch" style="background:#eef2ff; flex:1;">
+        <div class="swatch-label" style="color:#060c24;">FG</div>
+        <div class="swatch-value" style="color:#060c24;">#eef2ff</div>
+      </div>
+      <div class="swatch" style="background:#4d9fff; flex:1;">
+        <div class="swatch-label" style="color:#060c24;">ACCENT</div>
+        <div class="swatch-value" style="color:#060c24;">#4d9fff</div>
+      </div>
+      <div class="swatch" style="background:rgba(77,159,255,0.25); flex:1;">
+        <div class="swatch-label" style="color:#4d9fff;">DIM</div>
+        <div class="swatch-value" style="color:#4d9fff;">25%</div>
+      </div>
+      <div class="swatch" style="background:rgba(77,159,255,0.07); flex:1;">
+        <div class="swatch-label" style="color:#4d9fff;">GHOST</div>
+        <div class="swatch-value" style="color:#4d9fff;">7%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="palette-row">
+    <div class="palette-name">Charcoal Ember</div>
+    <div class="palette">
+      <div class="swatch" style="background:#13100c; flex:2;">
+        <div class="swatch-label" style="color:#f5f0ea;">BG</div>
+        <div class="swatch-value" style="color:#f5f0ea;">#13100c</div>
+      </div>
+      <div class="swatch" style="background:#f5f0ea; flex:1;">
+        <div class="swatch-label" style="color:#13100c;">FG</div>
+        <div class="swatch-value" style="color:#13100c;">#f5f0ea</div>
+      </div>
+      <div class="swatch" style="background:#ff6b2b; flex:1;">
+        <div class="swatch-label" style="color:#13100c;">ACCENT</div>
+        <div class="swatch-value" style="color:#13100c;">#ff6b2b</div>
+      </div>
+      <div class="swatch" style="background:rgba(255,107,43,0.25); flex:1;">
+        <div class="swatch-label" style="color:#ff6b2b;">DIM</div>
+        <div class="swatch-value" style="color:#ff6b2b;">25%</div>
+      </div>
+      <div class="swatch" style="background:rgba(255,107,43,0.07); flex:1;">
+        <div class="swatch-label" style="color:#ff6b2b;">GHOST</div>
+        <div class="swatch-value" style="color:#ff6b2b;">7%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="palette-row">
+    <div class="palette-name">Deep Plum</div>
+    <div class="palette">
+      <div class="swatch" style="background:#100d1a; flex:2;">
+        <div class="swatch-label" style="color:#f2eeff;">BG</div>
+        <div class="swatch-value" style="color:#f2eeff;">#100d1a</div>
+      </div>
+      <div class="swatch" style="background:#f2eeff; flex:1;">
+        <div class="swatch-label" style="color:#100d1a;">FG</div>
+        <div class="swatch-value" style="color:#100d1a;">#f2eeff</div>
+      </div>
+      <div class="swatch" style="background:#b57bff; flex:1;">
+        <div class="swatch-label" style="color:#100d1a;">ACCENT</div>
+        <div class="swatch-value" style="color:#100d1a;">#b57bff</div>
+      </div>
+      <div class="swatch" style="background:rgba(181,123,255,0.25); flex:1;">
+        <div class="swatch-label" style="color:#b57bff;">DIM</div>
+        <div class="swatch-value" style="color:#b57bff;">25%</div>
+      </div>
+      <div class="swatch" style="background:rgba(181,123,255,0.07); flex:1;">
+        <div class="swatch-label" style="color:#b57bff;">GHOST</div>
+        <div class="swatch-value" style="color:#b57bff;">7%</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

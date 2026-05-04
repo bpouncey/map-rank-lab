@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e1016; font-family: 'Space Grotesk', sans-serif; padding: 28px 32px; }
+  .sec-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 12px; }
+  .row { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; align-items: flex-start; }
+  .pill {
+    padding: 12px 28px;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+  .pill-label { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.3); margin-top: 6px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="sec-label">Algorithm Pills</div>
+<div class="row">
+  <div>
+    <div class="pill" style="background:#c8f135; color:#0e1016;">Prominence</div>
+    <div class="pill-label">Active</div>
+  </div>
+  <div>
+    <div class="pill" style="background:rgba(255,255,255,0.07); color:rgba(240,240,238,0.4); border:1px solid rgba(255,255,255,0.1);">Relevance</div>
+    <div class="pill-label">Dim</div>
+  </div>
+  <div>
+    <div class="pill" style="background:rgba(255,255,255,0.07); color:rgba(240,240,238,0.4); border:1px solid rgba(255,255,255,0.1);">Distance</div>
+    <div class="pill-label">Dim</div>
+  </div>
+</div>
+
+<div class="sec-label">Pill — All Palettes (Active state)</div>
+<div class="row">
+  <div class="pill" style="background:#c8f135; color:#0e1016;">Midnight Lime</div>
+  <div class="pill" style="background:#4d9fff; color:#060c24;">Navy Electric</div>
+  <div class="pill" style="background:#ff6b2b; color:#13100c;">Charcoal Ember</div>
+  <div class="pill" style="background:#b57bff; color:#100d1a;">Deep Plum</div>
+</div>
+
+<div class="sec-label">Corner Radius Variants</div>
+<div class="row">
+  <div>
+    <div class="pill" style="background:#c8f135; color:#0e1016; border-radius:4px;">Sharp</div>
+    <div class="pill-label">4px</div>
+  </div>
+  <div>
+    <div class="pill" style="background:#c8f135; color:#0e1016; border-radius:12px;">Soft</div>
+    <div class="pill-label">12px</div>
+  </div>
+  <div>
+    <div class="pill" style="background:#c8f135; color:#0e1016; border-radius:24px;">Round</div>
+    <div class="pill-label">24px</div>
+  </div>
+</div>
+
+</body>
+</html>

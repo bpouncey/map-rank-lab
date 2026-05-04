@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e1016; font-family: 'Space Grotesk', sans-serif; padding: 28px 32px; }
+  .sec-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 4px; }
+  .fix-item {
+    display: flex;
+    gap: 32px;
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .fix-item:first-of-type { border-top: 1px solid rgba(255,255,255,0.08); }
+  .fix-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #c8f135;
+    letter-spacing: 0.1em;
+    padding-top: 4px;
+    flex-shrink: 0;
+    width: 36px;
+  }
+  .fix-head {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f0f0ee;
+    margin-bottom: 6px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .fix-desc {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(240,240,238,0.55);
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="sec-label" style="margin-bottom:12px;">Fix / Numbered List Item</div>
+
+<div class="fix-item">
+  <div class="fix-num">01</div>
+  <div>
+    <div class="fix-head">Complete your service area</div>
+    <div class="fix-desc">Radius settings matter more than your pin location</div>
+  </div>
+</div>
+
+<div class="fix-item">
+  <div class="fix-num">02</div>
+  <div>
+    <div class="fix-head">Add real categories</div>
+    <div class="fix-desc">Don't just pick "Contractor" — get specific</div>
+  </div>
+</div>
+
+<div class="fix-item">
+  <div class="fix-num">03</div>
+  <div>
+    <div class="fix-head">Post to your GBP weekly</div>
+    <div class="fix-desc">Activity signals relevance to Google</div>
+  </div>
+</div>
+
+</body>
+</html>

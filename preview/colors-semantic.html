@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e1016; font-family: 'Space Grotesk', sans-serif; padding: 24px; }
+  .row { display: flex; gap: 8px; margin-bottom: 8px; align-items: stretch; }
+  .token { flex: 1; border-radius: 4px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; min-height: 64px; justify-content: flex-end; }
+  .token-name { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.55; }
+  .token-val  { font-family: 'Space Mono', monospace; font-size: 11px; }
+  .divider-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .divider-swatch { height: 40px; flex: 1; border-radius: 4px; display: flex; align-items: center; padding: 0 14px; }
+  .divider-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+
+<!-- Text tokens -->
+<div class="row">
+  <div class="token" style="background:#0e1016; border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:#f0f0ee;">text-primary</div>
+    <div class="token-val" style="color:#f0f0ee;">#f0f0ee</div>
+  </div>
+  <div class="token" style="background:#0e1016; border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:rgba(240,240,238,0.55);">text-body</div>
+    <div class="token-val" style="color:rgba(240,240,238,0.55);">fg @ 55%</div>
+  </div>
+  <div class="token" style="background:#0e1016; border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:rgba(240,240,238,0.30);">text-muted</div>
+    <div class="token-val" style="color:rgba(240,240,238,0.30);">fg @ 30%</div>
+  </div>
+  <div class="token" style="background:#0e1016; border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:rgba(240,240,238,0.20);">text-ghost</div>
+    <div class="token-val" style="color:rgba(240,240,238,0.20);">fg @ 20%</div>
+  </div>
+  <div class="token" style="background:#0e1016; border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:#c8f135;">text-accent</div>
+    <div class="token-val" style="color:#c8f135;">#c8f135</div>
+  </div>
+</div>
+
+<!-- Surface tokens -->
+<div class="row">
+  <div class="token" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:rgba(240,240,238,0.4);">surface-card</div>
+    <div class="token-val" style="color:rgba(240,240,238,0.4);">white 4%</div>
+  </div>
+  <div class="token" style="background:rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:rgba(240,240,238,0.4);">surface-pill-dim</div>
+    <div class="token-val" style="color:rgba(240,240,238,0.4);">white 7%</div>
+  </div>
+  <div class="token" style="background:rgba(200,241,53,0.06); border: 1px solid rgba(255,255,255,0.08);">
+    <div class="token-name" style="color:#c8f135;">surface-accent</div>
+    <div class="token-val" style="color:#c8f135;">accent 6%</div>
+  </div>
+</div>
+
+<!-- Border tokens -->
+<div class="divider-row">
+  <div class="divider-swatch" style="border: 1px solid rgba(255,255,255,0.08);">
+    <span class="divider-label">border · white 8%</span>
+  </div>
+  <div class="divider-swatch" style="border: 1px solid rgba(255,255,255,0.15);">
+    <span class="divider-label">border-strong · white 15%</span>
+  </div>
+  <div class="divider-swatch" style="border-left: 4px solid #c8f135; padding-left: 12px;">
+    <span class="divider-label" style="color:#c8f135;">border-accent · 4px left</span>
+  </div>
+  <div class="divider-swatch" style="border: 1px dashed rgba(200,241,53,0.2);">
+    <span class="divider-label" style="color:rgba(200,241,53,0.6);">border-accent-dim · dashed</span>
+  </div>
+</div>
+
+</body>
+</html>

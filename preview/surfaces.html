@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; font-family: 'Space Grotesk', sans-serif; padding: 24px; display: flex; gap: 16px; flex-wrap: wrap; }
+  .surface { width: 180px; height: 110px; border-radius: 6px; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: flex-end; padding: 12px; }
+  .surface-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; position: relative; z-index: 1; }
+  .tex-dots::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.13) 1.5px, transparent 1.5px);
+    background-size: 36px 36px;
+  }
+  .tex-lines::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(255,255,255,0.13) 47px, rgba(255,255,255,0.13) 48px);
+  }
+</style>
+</head>
+<body>
+
+<div>
+  <div class="surface tex-dots" style="background:#0e1016;">
+    <div class="surface-label" style="color:rgba(240,240,238,0.4);">BG · Dots</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Midnight Lime + Dots</div>
+</div>
+
+<div>
+  <div class="surface tex-lines" style="background:#0e1016;">
+    <div class="surface-label" style="color:rgba(240,240,238,0.4);">BG · Lines</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Midnight Lime + Lines</div>
+</div>
+
+<div>
+  <div class="surface" style="background:#0e1016; border:1px solid rgba(255,255,255,0.08);">
+    <div class="surface-label" style="color:rgba(240,240,238,0.4);">BG · None</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Midnight Lime · Flat</div>
+</div>
+
+<div>
+  <div class="surface" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);">
+    <div class="surface-label" style="color:rgba(240,240,238,0.4);">surface-card</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Card · white 4%</div>
+</div>
+
+<div>
+  <div class="surface" style="background:rgba(200,241,53,0.06); border-left:4px solid #c8f135;">
+    <div class="surface-label" style="color:#c8f135;">surface-accent</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Accent ghost panel</div>
+</div>
+
+<div>
+  <div class="surface tex-dots" style="background:#060c24;">
+    <div class="surface-label" style="color:rgba(77,159,255,0.6);">Navy + Dots</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Navy Electric</div>
+</div>
+
+<div>
+  <div class="surface tex-dots" style="background:#13100c;">
+    <div class="surface-label" style="color:rgba(255,107,43,0.6);">Ember + Dots</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Charcoal Ember</div>
+</div>
+
+<div>
+  <div class="surface tex-dots" style="background:#100d1a;">
+    <div class="surface-label" style="color:rgba(181,123,255,0.6);">Plum + Dots</div>
+  </div>
+  <div style="font-family:'Space Mono',monospace; font-size:10px; color:rgba(255,255,255,0.3); margin-top:6px; text-align:center;">Deep Plum</div>
+</div>
+
+</body>
+</html>

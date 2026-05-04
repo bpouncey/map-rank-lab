@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e1016; font-family: 'Space Grotesk', sans-serif; padding: 28px 32px; }
+  .row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .stat-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 24px 24px 20px;
+    min-width: 140px;
+  }
+  .stat-val { font-family: 'Space Mono', monospace; font-size: 32px; font-weight: 700; color: #c8f135; margin-bottom: 8px; }
+  .stat-lbl { font-size: 14px; color: rgba(255,255,255,0.4); line-height: 1.4; }
+  .stat-sub { font-size: 12px; color: rgba(255,100,100,0.7); }
+  .sec-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div class="sec-label">Stat Box — Midnight Lime</div>
+<div class="row" style="margin-bottom:24px;">
+  <div class="stat-box">
+    <div class="stat-val">23%</div>
+    <div class="stat-lbl">Profile Completeness<br><span class="stat-sub">avg. contractor score</span></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val">11%</div>
+    <div class="stat-lbl">Review Keywords<br><span class="stat-sub">avg. contractor score</span></div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val">4%</div>
+    <div class="stat-lbl">GBP Posts<br><span class="stat-sub">avg. contractor score</span></div>
+  </div>
+</div>
+
+<div class="sec-label">Stat Box — Other Accents</div>
+<div class="row">
+  <div class="stat-box">
+    <div class="stat-val" style="color:#4d9fff;">87%</div>
+    <div class="stat-lbl">Navy Electric</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" style="color:#ff6b2b;">64%</div>
+    <div class="stat-lbl">Charcoal Ember</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-val" style="color:#b57bff;">42%</div>
+    <div class="stat-lbl">Deep Plum</div>
+  </div>
+</div>
+
+</body>
+</html>
