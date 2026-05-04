@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Pack Lab — Instagram Carousel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; font-family: 'Space Grotesk', sans-serif; }
+
+  /* ── CSS VARIABLES (driven by tweaks) ── */
+  :root {
+    --bg:        #0e1016;
+    --fg:        #f0f0ee;
+    --accent:    #c8f135;
+    --accent-bg: rgba(200,241,53,0.06);
+    --accent-dim:rgba(200,241,53,0.2);
+    --accent-ghost:rgba(200,241,53,0.04);
+    --body-op:   0.55;
+    --radius:    4px;
+    --scale:     1;
+    --tex-op:    0.13;
+  }
+
+  /* ── SHARED SLIDE SYSTEM ── */
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Texture layer — swapped via class on .slide */
+  .slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .slide.tex-dots::before {
+    background-image: radial-gradient(circle, rgba(255,255,255,var(--tex-op)) 1.5px, transparent 1.5px);
+    background-size: 36px 36px;
+  }
+  .slide.tex-lines::before {
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(255,255,255,var(--tex-op)) 47px, rgba(255,255,255,var(--tex-op)) 48px);
+  }
+  .slide.tex-none::before { display: none; }
+
+  .slide-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 72px 80px;
+  }
+
+  /* Wordmark */
+  .wordmark {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .wordmark span { color: var(--accent); }
+
+  .counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+
+  /* ── SLIDE 1 ── */
+  .s1-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:auto; }
+  .s1-body { display:flex; flex-direction:column; justify-content:flex-end; flex:1; }
+
+  .s1-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 40px;
+  }
+
+  .s1-headline {
+    font-size: calc(90px * var(--scale));
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: var(--fg);
+    margin-bottom: 48px;
+    text-wrap: pretty;
+  }
+  .s1-headline em { color: var(--accent); font-style: normal; }
+
+  .s1-subhead {
+    font-size: calc(24px * var(--scale));
+    font-weight: 500;
+    color: rgba(255,255,255,var(--body-op));
+    letter-spacing: 0.01em;
+  }
+
+  .s1-bottom { display:flex; justify-content:space-between; align-items:flex-end; margin-top:64px; }
+
+  /* ── SLIDE 2 ── */
+  .s2-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:80px; }
+  .s2-algo-row { display:flex; gap:16px; margin-bottom:64px; }
+
+  .algo-pill {
+    padding: 12px 28px;
+    border-radius: var(--radius);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .algo-pill.active { background: var(--accent); color: var(--bg); }
+  .algo-pill.dim { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
+
+  .s2-body {
+    font-size: calc(32px * var(--scale));
+    font-weight: 500;
+    line-height: 1.5;
+    color: rgba(255,255,255,var(--body-op));
+    margin-bottom: 56px;
+    text-wrap: pretty;
+  }
+  .s2-body strong { color: var(--fg); font-weight: 700; }
+
+  .pullquote {
+    border-left: 4px solid var(--accent);
+    padding: 28px 36px;
+    background: var(--accent-bg);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .pullquote p {
+    font-size: calc(26px * var(--scale));
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .s2-stat-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius);
+    padding: 24px 24px 20px;
+    flex: 1;
+  }
+
+  .s2-bottom { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; }
+
+  /* ── SLIDES 3 & 4 ── */
+  .fixes-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:64px; }
+
+  .fix-item {
+    display: flex;
+    gap: 32px;
+    padding: 44px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .fix-item:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+
+  .fix-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    padding-top: 6px;
+    flex-shrink: 0;
+    width: 36px;
+  }
+
+  .fix-headline {
+    font-size: calc(36px * var(--scale));
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 12px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .fix-desc {
+    font-size: calc(20px * var(--scale));
+    font-weight: 400;
+    color: rgba(255,255,255,var(--body-op));
+    line-height: 1.5;
+  }
+
+  .fixes-bottom { margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; }
+
+  /* ── SLIDE 5 ── */
+  .s5-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:auto; }
+  .s5-body { display:flex; flex-direction:column; justify-content:center; flex:1; }
+
+  .s5-pre {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 36px;
+  }
+
+  .s5-headline {
+    font-size: calc(86px * var(--scale));
+    font-weight: 700;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    color: var(--fg);
+    margin-bottom: 40px;
+  }
+  .s5-headline em { color: var(--accent); font-style: normal; }
+
+  .s5-sub {
+    font-size: calc(24px * var(--scale));
+    font-weight: 400;
+    color: rgba(255,255,255,var(--body-op));
+    line-height: 1.6;
+    margin-bottom: 64px;
+    max-width: 720px;
+    text-wrap: pretty;
+  }
+
+  .s5-cta-block {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 28px 44px;
+    border-radius: var(--radius);
+    font-size: calc(20px * var(--scale));
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+
+  .s5-bottom { margin-top:80px; display:flex; justify-content:space-between; align-items:flex-end; }
+
+  .continue-hint {
+    margin-top: 48px;
+    padding: 32px 36px;
+    background: var(--accent-bg);
+    border: 1px dashed var(--accent-dim);
+    border-radius: var(--radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+
+const { DCSection, DCArtboard, DesignCanvas } = window;
+const { TweaksPanel, TweakSection, TweakRadio, TweakSlider, TweakSelect, useTweaks } = window;
+
+/* ── PALETTES ── */
+const PALETTES = {
+  'Midnight Lime': { bg: '#0e1016', fg: '#f0f0ee', accent: '#c8f135', accentBg: 'rgba(200,241,53,0.06)', accentDim: 'rgba(200,241,53,0.2)', accentGhost: 'rgba(200,241,53,0.04)' },
+  'Navy Electric': { bg: '#060c24', fg: '#eef2ff', accent: '#4d9fff', accentBg: 'rgba(77,159,255,0.07)', accentDim: 'rgba(77,159,255,0.25)', accentGhost: 'rgba(77,159,255,0.04)' },
+  'Charcoal Ember': { bg: '#13100c', fg: '#f5f0ea', accent: '#ff6b2b', accentBg: 'rgba(255,107,43,0.07)', accentDim: 'rgba(255,107,43,0.25)', accentGhost: 'rgba(255,107,43,0.04)' },
+  'Deep Plum': { bg: '#100d1a', fg: '#f2eeff', accent: '#b57bff', accentBg: 'rgba(181,123,255,0.07)', accentDim: 'rgba(181,123,255,0.25)', accentGhost: 'rgba(181,123,255,0.04)' }
+};
+
+const DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "Midnight Lime",
+  "typeScale": 1.05,
+  "bodyOpacity": 0.55,
+  "texture": "Dots",
+  "textureOpacity": 0.13,
+  "cornerStyle": "Round"
+} /*EDITMODE-END*/;
+
+/* ── CSS VAR INJECTOR ── */
+function applyTheme({ palette, typeScale, bodyOpacity, texture, textureOpacity, cornerStyle }) {
+  const p = PALETTES[palette] || PALETTES['Midnight Lime'];
+  const radius = cornerStyle === 'Sharp' ? '4px' : cornerStyle === 'Soft' ? '12px' : '24px';
+  const root = document.documentElement;
+  root.style.setProperty('--bg', p.bg);
+  root.style.setProperty('--fg', p.fg);
+  root.style.setProperty('--accent', p.accent);
+  root.style.setProperty('--accent-bg', p.accentBg);
+  root.style.setProperty('--accent-dim', p.accentDim);
+  root.style.setProperty('--accent-ghost', p.accentGhost);
+  root.style.setProperty('--body-op', bodyOpacity);
+  root.style.setProperty('--tex-op', textureOpacity);
+  root.style.setProperty('--scale', typeScale);
+  root.style.setProperty('--radius', radius);
+}
+
+/* ── PALETTE SWATCH OPTION ── */
+function PalettePicker({ value, onChange }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      {Object.entries(PALETTES).map(([name, p]) =>
+      <button
+        key={name}
+        onClick={() => onChange(name)}
+        style={{
+          display: 'flex', alignItems: 'center', gap: '10px',
+          padding: '8px 10px',
+          background: value === name ? 'rgba(255,255,255,0.1)' : 'transparent',
+          border: value === name ? '1px solid rgba(255,255,255,0.25)' : '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '6px',
+          cursor: 'pointer',
+          width: '100%',
+          textAlign: 'left'
+        }}>
+        
+          {/* mini swatch */}
+          <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+            <div style={{ width: '18px', height: '18px', borderRadius: '3px', background: p.bg, border: '1px solid rgba(255,255,255,0.15)' }}></div>
+            <div style={{ width: '18px', height: '18px', borderRadius: '3px', background: p.accent }}></div>
+          </div>
+          <span style={{ fontSize: '12px', color: value === name ? '#fff' : 'rgba(255,255,255,0.55)', fontFamily: 'inherit' }}>{name}</span>
+          {value === name && <span style={{ marginLeft: 'auto', color: p.accent, fontSize: '12px' }}>✓</span>}
+        </button>
+      )}
+    </div>);
+
+}
+
+/* ── SLIDES ── */
+function texClass(t) {
+  return t === 'Dots' ? 'tex-dots' : t === 'Lines' ? 'tex-lines' : 'tex-none';
+}
+
+function Wordmark() {
+  return <span className="wordmark">Local <span>Pack</span> Lab</span>;
+}
+
+function Slide1({ tex }) {
+  return (
+    <div className={`slide ${texClass(tex)}`}>
+      <div className="slide-inner">
+        <div className="s1-top">
+          <Wordmark />
+          <span className="counter">1 / 5</span>
+        </div>
+        <div className="s1-body">
+          <div className="s1-eyebrow">Local SEO for Exterior Contractors</div>
+          <h1 className="s1-headline">
+            Why Your Pressure Washing Business <em>Doesn't Show Up</em> on Google Maps
+          </h1>
+          <p className="s1-subhead">5 fixes you can do this weekend</p>
+        </div>
+        <div className="s1-bottom">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {[64, 32, 32, 32, 32].map((w, i) =>
+            <div key={i} style={{ width: `${w}px`, height: '3px', background: i === 0 ? 'var(--accent)' : 'rgba(255,255,255,0.15)', borderRadius: '2px' }}></div>
+            )}
+          </div>
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>localpacklab.com</div>
+        </div>
+      </div>
+      <div style={{ position: 'absolute', right: '-30px', bottom: '-60px', fontFamily: "'Space Grotesk', sans-serif", fontSize: '560px', fontWeight: 700, lineHeight: 1, color: 'var(--accent-ghost)', userSelect: 'none', pointerEvents: 'none', zIndex: 0 }}>?</div>
+    </div>);
+
+}
+
+function Slide2({ tex }) {
+  const stats = [
+  { label: 'Profile Completeness', pct: '23%' },
+  { label: 'Review Keywords', pct: '11%' },
+  { label: 'GBP Posts', pct: '4%' }];
+
+  return (
+    <div className={`slide ${texClass(tex)}`}>
+      <div className="slide-inner">
+        <div className="s2-top">
+          <Wordmark />
+          <span className="counter">2 / 5</span>
+        </div>
+        <div className="section-label">The Real Problem</div>
+        <div className="s2-algo-row">
+          <div className="algo-pill dim">Relevance</div>
+          <div className="algo-pill dim">Distance</div>
+          <div className="algo-pill active">Prominence</div>
+        </div>
+        <p className="s2-body">
+          Google's local algorithm ranks on <strong>3 things:</strong> Relevance, Distance, and Prominence. Most contractors nail distance and ignore the other two.
+        </p>
+        <div className="pullquote">
+          <p>"Proximity alone won't save a weak profile"</p>
+        </div>
+        <div style={{ marginTop: '40px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+          {stats.map((item) =>
+          <div key={item.label} className="s2-stat-box">
+              <div style={{ fontFamily: "'Space Mono', monospace", fontSize: '32px', fontWeight: 700, color: 'var(--accent)', marginBottom: '8px' }}>{item.pct}</div>
+              <div style={{ fontSize: '14px', color: 'rgba(255,255,255,0.4)', lineHeight: 1.4 }}>{item.label}<br /><span style={{ color: 'rgba(255,100,100,0.7)', fontSize: '12px' }}>avg. contractor score</span></div>
+            </div>
+          )}
+        </div>
+        <div className="s2-bottom">
+          <Wordmark />
+          <span className="counter" style={{ visibility: 'hidden' }}>2/5</span>
+        </div>
+      </div>
+    </div>);
+
+}
+
+function Slide3({ tex }) {
+  const fixes = [
+  { num: '01', head: 'Complete your service area', desc: 'Radius settings matter more than your pin location' },
+  { num: '01', head: 'Add real categories', desc: "Don't just pick 'Contractor' — get specific" }];
+
+  return (
+    <div className={`slide ${texClass(tex)}`}>
+      <div className="slide-inner">
+        <div className="fixes-top"><Wordmark /><span className="counter">3 / 5</span></div>
+        <div className="section-label" style={{ fontSize: "24px" }}>The Fixes</div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          {fixes.map((fix, i) =>
+          <div key={fix.num} className="fix-item" style={i === fixes.length - 1 ? { borderBottom: '1px solid rgba(255,255,255,0.08)' } : {}}>
+              <div className="fix-number">{fix.num}</div>
+              <div>
+                <div className="fix-headline">{fix.head}</div>
+                <div className="fix-desc">"{fix.desc}"</div>
+              </div>
+            </div>
+          )}
+          <div className="continue-hint">
+            <span style={{ fontFamily: "'Space Mono', monospace", color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', fontSize: "16px" }}>CONTINUED ON NEXT SLIDE</span>
+            <span style={{ color: 'var(--accent)', fontSize: '24px' }}>→</span>
+          </div>
+        </div>
+        <div className="fixes-bottom">
+          <Wordmark />
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>localpacklab.com</div>
+        </div>
+      </div>
+    </div>);
+
+}
+
+function Slide4({ tex }) {
+  const fixes = [
+  { num: '03', head: 'Post to your GBP weekly', desc: 'Activity signals relevance to Google' },
+  { num: '04', head: 'Get reviews that mention services', desc: 'Not just stars — keywords in reviews count' },
+  { num: '05', head: 'Add photos with geo data', desc: 'Most competitors skip this entirely' }];
+
+  return (
+    <div className={`slide ${texClass(tex)}`}>
+      <div className="slide-inner">
+        <div className="fixes-top"><Wordmark /><span className="counter">4 / 5</span></div>
+        <div className="section-label" style={{ fontSize: "24px" }}>The Fixes — cont.</div>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          {fixes.map((fix, i) =>
+          <div key={fix.num} className="fix-item" style={i === fixes.length - 1 ? { borderBottom: '1px solid rgba(255,255,255,0.08)' } : {}}>
+              <div className="fix-number">{fix.num}</div>
+              <div>
+                <div className="fix-headline">{fix.head}</div>
+                <div className="fix-desc">"{fix.desc}"</div>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="fixes-bottom">
+          <Wordmark />
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>localpacklab.com</div>
+        </div>
+      </div>
+    </div>);
+
+}
+
+function Slide5({ tex }) {
+  return (
+    <div className={`slide ${texClass(tex)}`}>
+      <div className="slide-inner">
+        <div className="s5-top"><Wordmark /><span className="counter">5 / 5</span></div>
+        <div className="s5-body">
+          <div className="s5-pre" style={{ fontSize: "16px" }}>You made it to the end</div>
+          <h2 className="s5-headline">Want the <em>full checklist?</em></h2>
+          <p className="s5-sub">We built a step-by-step guide specifically for pressure washers — every fix, in order, with screenshots.</p>
+          <div className="s5-cta-block">
+            <span>Link in bio → Local Pack Lab GBP Guide</span>
+            <span style={{ fontSize: '22px' }}>↗</span>
+          </div>
+        </div>
+        <div className="s5-bottom">
+          <Wordmark />
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: '11px', color: 'rgba(255,255,255,0.2)', letterSpacing: '0.12em', textTransform: 'uppercase' }}>localpacklab.com</div>
+        </div>
+      </div>
+      <div style={{ position: 'absolute', right: '-180px', top: '200px', width: '600px', height: '600px', borderRadius: '50%', border: '2px solid var(--accent-dim)', pointerEvents: 'none', zIndex: 0, opacity: 0.4 }}></div>
+      <div style={{ position: 'absolute', right: '-100px', top: '280px', width: '440px', height: '440px', borderRadius: '50%', border: '1px solid var(--accent-dim)', pointerEvents: 'none', zIndex: 0, opacity: 0.25 }}></div>
+    </div>);
+
+}
+
+/* ── MAIN APP ── */
+function App() {
+  const [tweaks, setTweak] = useTweaks(DEFAULTS);
+  const { palette, typeScale, bodyOpacity, texture, cornerStyle } = tweaks;
+
+  // Apply CSS vars whenever tweaks change
+  React.useEffect(() => {
+    applyTheme(tweaks);
+  }, [tweaks]);
+
+  return (
+    <>
+      <DesignCanvas title="Local Pack Lab — Instagram Carousel">
+        <DCSection id="slides" title="Pressure Washing GBP Carousel · 1080 × 1350">
+          <DCArtboard id="s1" label="Slide 1 — Hook" width={1080} height={1350}><Slide1 tex={texture} /></DCArtboard>
+          <DCArtboard id="s2" label="Slide 2 — Problem" width={1080} height={1350}><Slide2 tex={texture} /></DCArtboard>
+          <DCArtboard id="s3" label="Slide 3 — Fixes 01–02" width={1080} height={1350}><Slide3 tex={texture} /></DCArtboard>
+          <DCArtboard id="s4" label="Slide 4 — Fixes 03–05" width={1080} height={1350}><Slide4 tex={texture} /></DCArtboard>
+          <DCArtboard id="s5" label="Slide 5 — CTA" width={1080} height={1350}><Slide5 tex={texture} /></DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel>
+        <TweakSection label="Color Palette">
+          <PalettePicker value={palette} onChange={(v) => setTweak('palette', v)} />
+        </TweakSection>
+
+        <TweakSection label="Typography">
+          <TweakSlider
+            label="Type Scale"
+            value={typeScale}
+            min={0.75} max={1.25} step={0.05}
+            display={(v) => `${Math.round(v * 100)}%`}
+            onChange={(v) => setTweak('typeScale', v)} />
+          
+          <TweakSlider
+            label="Body Text Opacity"
+            value={bodyOpacity}
+            min={0.25} max={1.0} step={0.05}
+            display={(v) => `${Math.round(v * 100)}%`}
+            onChange={(v) => setTweak('bodyOpacity', v)} />
+          
+        </TweakSection>
+
+        <TweakSection label="Surface">
+          <TweakRadio
+            label="Background Texture"
+            value={texture}
+            options={['Dots', 'Lines', 'None']}
+            onChange={(v) => setTweak('texture', v)} />
+          
+          <TweakSlider
+            label="Texture Opacity"
+            value={tweaks.textureOpacity}
+            min={0.02} max={0.4} step={0.01}
+            display={(v) => `${Math.round(v * 100)}%`}
+            onChange={(v) => setTweak('textureOpacity', v)} />
+          
+          <TweakRadio
+            label="Corner Style"
+            value={cornerStyle}
+            options={['Sharp', 'Soft', 'Round']}
+            onChange={(v) => setTweak('cornerStyle', v)} />
+          
+        </TweakSection>
+      </TweaksPanel>
+    </>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

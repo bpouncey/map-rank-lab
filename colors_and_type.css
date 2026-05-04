@@ -1,0 +1,356 @@
+/* ============================================================
+   LOCAL PACK LAB — Design Tokens
+   colors_and_type.css
+   
+   Import this file in any LPL artifact to get the full token set.
+   @import url('./colors_and_type.css');
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── PALETTE: Midnight Lime (default) ── */
+:root {
+  --lpl-bg:           #0e1016;
+  --lpl-fg:           #f0f0ee;
+  --lpl-accent:       #c8f135;
+  --lpl-accent-bg:    rgba(200, 241, 53, 0.06);
+  --lpl-accent-dim:   rgba(200, 241, 53, 0.20);
+  --lpl-accent-ghost: rgba(200, 241, 53, 0.04);
+}
+
+/* ── PALETTE OVERRIDES (add class to :root or wrapper) ── */
+.palette-navy-electric {
+  --lpl-bg:           #060c24;
+  --lpl-fg:           #eef2ff;
+  --lpl-accent:       #4d9fff;
+  --lpl-accent-bg:    rgba(77, 159, 255, 0.07);
+  --lpl-accent-dim:   rgba(77, 159, 255, 0.25);
+  --lpl-accent-ghost: rgba(77, 159, 255, 0.04);
+}
+
+.palette-charcoal-ember {
+  --lpl-bg:           #13100c;
+  --lpl-fg:           #f5f0ea;
+  --lpl-accent:       #ff6b2b;
+  --lpl-accent-bg:    rgba(255, 107, 43, 0.07);
+  --lpl-accent-dim:   rgba(255, 107, 43, 0.25);
+  --lpl-accent-ghost: rgba(255, 107, 43, 0.04);
+}
+
+.palette-deep-plum {
+  --lpl-bg:           #100d1a;
+  --lpl-fg:           #f2eeff;
+  --lpl-accent:       #b57bff;
+  --lpl-accent-bg:    rgba(181, 123, 255, 0.07);
+  --lpl-accent-dim:   rgba(181, 123, 255, 0.25);
+  --lpl-accent-ghost: rgba(181, 123, 255, 0.04);
+}
+
+/* ── SEMANTIC COLORS (alias base tokens) ── */
+:root {
+  /* Text */
+  --lpl-text-primary:    var(--lpl-fg);
+  --lpl-text-body:       rgba(240, 240, 238, 0.55); /* --lpl-fg at 55% */
+  --lpl-text-muted:      rgba(240, 240, 238, 0.30);
+  --lpl-text-ghost:      rgba(240, 240, 238, 0.20);
+  --lpl-text-accent:     var(--lpl-accent);
+
+  /* Borders */
+  --lpl-border:          rgba(255, 255, 255, 0.08);
+  --lpl-border-strong:   rgba(255, 255, 255, 0.15);
+  --lpl-border-accent:   var(--lpl-accent);
+  --lpl-border-accent-dim: var(--lpl-accent-dim);
+
+  /* Surfaces */
+  --lpl-surface-card:    rgba(255, 255, 255, 0.04);
+  --lpl-surface-pill-dim: rgba(255, 255, 255, 0.07);
+  --lpl-surface-accent:  var(--lpl-accent-bg);
+
+  /* Progress / UI */
+  --lpl-progress-active: var(--lpl-accent);
+  --lpl-progress-rest:   rgba(255, 255, 255, 0.15);
+}
+
+/* ── CORNER RADIUS ── */
+:root {
+  --lpl-radius-sharp:  4px;
+  --lpl-radius-soft:   12px;
+  --lpl-radius-round:  24px;
+  --lpl-radius:        var(--lpl-radius-sharp); /* default */
+}
+
+/* ── SPACING SCALE ── */
+:root {
+  --lpl-space-1:   4px;
+  --lpl-space-2:   8px;
+  --lpl-space-3:  12px;
+  --lpl-space-4:  16px;
+  --lpl-space-5:  20px;
+  --lpl-space-6:  24px;
+  --lpl-space-7:  28px;
+  --lpl-space-8:  32px;
+  --lpl-space-10: 40px;
+  --lpl-space-12: 48px;
+  --lpl-space-14: 56px;
+  --lpl-space-16: 64px;
+  --lpl-space-20: 80px;
+  --lpl-space-24: 96px;
+
+  /* Slide layout */
+  --lpl-slide-pad-v: 72px;
+  --lpl-slide-pad-h: 80px;
+}
+
+/* ── TYPOGRAPHY ── */
+:root {
+  /* Font families */
+  --lpl-font-sans:  'Space Grotesk', sans-serif;
+  --lpl-font-mono:  'Space Mono', monospace;
+
+  /* Type scale multiplier (tweak this to scale all fluid type) */
+  --lpl-type-scale: 1;
+
+  /* Base sizes */
+  --lpl-size-hero:    calc(90px  * var(--lpl-type-scale));
+  --lpl-size-display: calc(86px  * var(--lpl-type-scale));
+  --lpl-size-fix-h:   calc(36px  * var(--lpl-type-scale));
+  --lpl-size-body-lg: calc(32px  * var(--lpl-type-scale));
+  --lpl-size-pullq:   calc(26px  * var(--lpl-type-scale));
+  --lpl-size-body:    calc(24px  * var(--lpl-type-scale));
+  --lpl-size-body-sm: calc(20px  * var(--lpl-type-scale));
+  --lpl-size-label:   13px;  /* mono labels — NOT scaled */
+  --lpl-size-eyebrow: 12px;  /* mono eyebrows — NOT scaled */
+  --lpl-size-meta:    11px;  /* mono meta — NOT scaled */
+}
+
+/* ── SEMANTIC TYPE ROLES ── */
+
+/* Hero headline — slide cover / hook */
+.lpl-hero {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-hero);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  color: var(--lpl-text-primary);
+  text-wrap: pretty;
+}
+.lpl-hero em { color: var(--lpl-text-accent); font-style: normal; }
+
+/* Display headline — CTA / section lead */
+.lpl-display {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-display);
+  font-weight: 700;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--lpl-text-primary);
+}
+.lpl-display em { color: var(--lpl-text-accent); font-style: normal; }
+
+/* Fix / item headline */
+.lpl-heading {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-fix-h);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--lpl-text-primary);
+}
+
+/* Body large */
+.lpl-body-lg {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-body-lg);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--lpl-text-body);
+  text-wrap: pretty;
+}
+.lpl-body-lg strong { color: var(--lpl-text-primary); font-weight: 700; }
+
+/* Body */
+.lpl-body {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--lpl-text-body);
+  text-wrap: pretty;
+}
+
+/* Body small */
+.lpl-body-sm {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-body-sm);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--lpl-text-body);
+}
+
+/* Pullquote */
+.lpl-pullquote-text {
+  font-family: var(--lpl-font-sans);
+  font-size: var(--lpl-size-pullq);
+  font-weight: 600;
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--lpl-text-accent);
+}
+
+/* Section label (mono, eyebrow) */
+.lpl-label {
+  font-family: var(--lpl-font-mono);
+  font-size: var(--lpl-size-eyebrow);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lpl-text-accent);
+}
+
+/* Wordmark */
+.lpl-wordmark {
+  font-family: var(--lpl-font-mono);
+  font-size: var(--lpl-size-label);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--lpl-text-muted);
+}
+.lpl-wordmark span { color: var(--lpl-text-accent); }
+
+/* Counter / slide number */
+.lpl-counter {
+  font-family: var(--lpl-font-mono);
+  font-size: var(--lpl-size-label);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--lpl-text-ghost);
+}
+
+/* Meta / footer URL */
+.lpl-meta {
+  font-family: var(--lpl-font-mono);
+  font-size: var(--lpl-size-meta);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--lpl-text-ghost);
+}
+
+/* ── COMPONENTS ── */
+
+/* Algo pill */
+.lpl-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 28px;
+  border-radius: var(--lpl-radius);
+  font-family: var(--lpl-font-mono);
+  font-size: var(--lpl-size-label);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.lpl-pill--active {
+  background: var(--lpl-accent);
+  color: var(--lpl-bg);
+}
+.lpl-pill--dim {
+  background: var(--lpl-surface-pill-dim);
+  color: var(--lpl-text-muted);
+  border: 1px solid var(--lpl-border);
+}
+
+/* Pullquote block */
+.lpl-pullquote {
+  border-left: 4px solid var(--lpl-border-accent);
+  padding: 28px 36px;
+  background: var(--lpl-surface-accent);
+  border-radius: 0 var(--lpl-radius) var(--lpl-radius) 0;
+}
+
+/* Stat box */
+.lpl-stat-box {
+  background: var(--lpl-surface-card);
+  border: 1px solid var(--lpl-border);
+  border-radius: var(--lpl-radius);
+  padding: 24px 24px 20px;
+  flex: 1;
+}
+.lpl-stat-box__value {
+  font-family: var(--lpl-font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--lpl-text-accent);
+  margin-bottom: 8px;
+}
+.lpl-stat-box__label {
+  font-family: var(--lpl-font-sans);
+  font-size: 14px;
+  color: var(--lpl-text-muted);
+  line-height: 1.4;
+}
+
+/* Fix / numbered list item */
+.lpl-fix-item {
+  display: flex;
+  gap: 32px;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--lpl-border);
+}
+.lpl-fix-item:first-child { border-top: 1px solid var(--lpl-border); }
+.lpl-fix-item__number {
+  font-family: var(--lpl-font-mono);
+  font-size: var(--lpl-size-label);
+  font-weight: 700;
+  color: var(--lpl-text-accent);
+  letter-spacing: 0.1em;
+  padding-top: 6px;
+  flex-shrink: 0;
+  width: 36px;
+}
+
+/* CTA block */
+.lpl-cta-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--lpl-accent);
+  color: var(--lpl-bg);
+  padding: 28px 44px;
+  border-radius: var(--lpl-radius);
+  font-family: var(--lpl-font-sans);
+  font-size: calc(20px * var(--lpl-type-scale));
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Continue hint */
+.lpl-continue-hint {
+  padding: 32px 36px;
+  background: var(--lpl-surface-accent);
+  border: 1px dashed var(--lpl-border-accent-dim);
+  border-radius: var(--lpl-radius);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Progress dots */
+.lpl-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lpl-progress__bar {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--lpl-progress-rest);
+}
+.lpl-progress__bar--active {
+  width: 64px;
+  background: var(--lpl-progress-active);
+}
+.lpl-progress__bar--rest { width: 32px; }

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Pack Lab — Carousel 3 (Trade Editorial)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a1a; font-family: 'DM Sans', sans-serif; }
+
+  /* ── SHARED ── */
+  .c3-slide {
+    width: 1080px;
+    height: 1350px;
+    background: #0b1f12;
+    color: #f4f0e6;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Fine horizontal rule texture */
+  .c3-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 47px,
+      rgba(255,255,255,0.025) 47px,
+      rgba(255,255,255,0.025) 48px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .c3-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 64px 88px 68px;
+  }
+
+  .c3-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 56px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(244,240,230,0.12);
+  }
+
+  .c3-wordmark {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,240,230,0.3);
+  }
+  .c3-wordmark span { color: #e8a830; }
+
+  .c3-counter {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(244,240,230,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  .c3-section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #e8a830;
+    margin-bottom: 28px;
+  }
+
+  .c3-rule {
+    width: 100%;
+    height: 1px;
+    background: rgba(244,240,230,0.12);
+    margin: 32px 0;
+  }
+
+  .c3-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 24px;
+    border-top: 1px solid rgba(244,240,230,0.1);
+    margin-top: auto;
+  }
+
+  /* ── SLIDE 1 ── */
+  .c3-s1-issue {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(244,240,230,0.3);
+    margin-bottom: 52px;
+  }
+
+  .c3-s1-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 100px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #f4f0e6;
+    margin-bottom: 40px;
+    text-wrap: pretty;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .c3-s1-headline em {
+    font-style: italic;
+    color: #e8a830;
+  }
+
+  .c3-s1-deck {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(244,240,230,0.5);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    border-left: 3px solid #e8a830;
+    padding-left: 24px;
+  }
+
+  /* ── SLIDE 2 ── */
+  .c3-three-factors {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 48px;
+  }
+
+  .c3-factor {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border-bottom: 1px solid rgba(244,240,230,0.1);
+  }
+
+  .c3-factor:first-child { border-top: 1px solid rgba(244,240,230,0.1); }
+
+  .c3-factor-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 900;
+    font-style: italic;
+    color: rgba(232,168,48,0.2);
+    width: 80px;
+    flex-shrink: 0;
+    padding: 28px 0;
+    line-height: 1;
+  }
+
+  .c3-factor-content {
+    flex: 1;
+    padding: 28px 0 28px 24px;
+    border-left: 1px solid rgba(244,240,230,0.08);
+  }
+
+  .c3-factor-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #f4f0e6;
+    margin-bottom: 8px;
+  }
+
+  .c3-factor-desc {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(244,240,230,0.45);
+    line-height: 1.5;
+  }
+
+  .c3-factor-weight {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #e8a830;
+    padding: 28px 0 28px 28px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .c3-pullquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-style: italic;
+    font-weight: 700;
+    color: rgba(244,240,230,0.7);
+    line-height: 1.45;
+    border-left: 3px solid #e8a830;
+    padding-left: 32px;
+    text-wrap: pretty;
+  }
+
+  /* ── SLIDES 3 & 4 ── */
+  .c3-fix {
+    padding: 40px 0;
+    border-bottom: 1px solid rgba(244,240,230,0.08);
+  }
+  .c3-fix:first-child { border-top: 1px solid rgba(244,240,230,0.08); }
+
+  .c3-fix-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 14px;
+  }
+
+  .c3-fix-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: #f4f0e6;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  .c3-fix-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: #e8a830;
+    letter-spacing: 0.14em;
+    flex-shrink: 0;
+    padding-left: 24px;
+  }
+
+  .c3-fix-body {
+    font-size: 19px;
+    font-weight: 300;
+    color: rgba(244,240,230,0.5);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  /* ── SLIDE 5 ── */
+  .c3-cta-kicker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(244,240,230,0.25);
+    margin-bottom: 36px;
+  }
+
+  .c3-cta-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: #f4f0e6;
+    margin-bottom: 40px;
+  }
+
+  .c3-cta-headline em {
+    font-style: italic;
+    color: #e8a830;
+  }
+
+  .c3-cta-body {
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(244,240,230,0.5);
+    line-height: 1.65;
+    margin-bottom: 64px;
+    max-width: 680px;
+    text-wrap: pretty;
+  }
+
+  .c3-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    border: 1px solid rgba(232,168,48,0.4);
+    color: #e8a830;
+    padding: 24px 40px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { DCSection, DCArtboard, DesignCanvas } = window;
+
+function C3Wordmark() {
+  return <span className="c3-wordmark">Local <span>Pack</span> Lab</span>;
+}
+
+/* ── SLIDE 1 ── */
+function C3S1() {
+  return (
+    <div className="c3-slide">
+      <div className="c3-inner">
+        <div className="c3-topbar">
+          <C3Wordmark />
+          <span className="c3-counter">1 / 5</span>
+        </div>
+
+        <div className="c3-s1-issue">Local Maps Intelligence Series — Vol. 02</div>
+
+        <div className="c3-s1-headline">
+          <div>How Google</div>
+          <div>decides <em>who</em></div>
+          <div>ranks #1 on</div>
+          <div>Maps.</div>
+        </div>
+
+        <div className="c3-rule"></div>
+
+        <p className="c3-s1-deck">
+          The algorithm isn't a mystery. It has three documented inputs — and most service contractors are ignoring two of them.
+        </p>
+
+        <div className="c3-bottom">
+          <C3Wordmark />
+          <span style={{fontFamily:"'Space Mono', monospace", fontSize:'10px', color:'rgba(244,240,230,0.2)', letterSpacing:'0.14em', textTransform:'uppercase'}}>localpacklab.com</span>
+        </div>
+      </div>
+
+      {/* decorative vertical rule far right */}
+      <div style={{position:'absolute', right:'88px', top:'0', bottom:'0', width:'1px', background:'rgba(232,168,48,0.06)', pointerEvents:'none'}}></div>
+    </div>
+  );
+}
+
+/* ── SLIDE 2 ── */
+function C3S2() {
+  const factors = [
+    {n:'I', name:'Relevance', desc:'How well your profile matches what someone searched', weight:'~33%'},
+    {n:'II', name:'Distance', desc:'Proximity of your business or service area to the searcher', weight:'~33%'},
+    {n:'III', name:'Prominence', desc:'How well-known Google thinks you are — reviews, links, activity', weight:'~33%'},
+  ];
+  return (
+    <div className="c3-slide">
+      <div className="c3-inner">
+        <div className="c3-topbar">
+          <C3Wordmark />
+          <span className="c3-counter">2 / 5</span>
+        </div>
+
+        <div className="c3-section-tag">The Three Ranking Factors</div>
+
+        <div className="c3-three-factors">
+          {factors.map(f => (
+            <div key={f.n} className="c3-factor">
+              <div className="c3-factor-num">{f.n}</div>
+              <div className="c3-factor-content">
+                <div className="c3-factor-name">{f.name}</div>
+                <div className="c3-factor-desc">{f.desc}</div>
+              </div>
+              <div className="c3-factor-weight">{f.weight}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="c3-pullquote">
+          "Most contractors only control Distance. The other two are wide open — and your competitors aren't touching them."
+        </div>
+
+        <div className="c3-bottom">
+          <C3Wordmark />
+          <span style={{fontFamily:"'Space Mono', monospace", fontSize:'10px', color:'rgba(244,240,230,0.2)', letterSpacing:'0.14em', textTransform:'uppercase'}}>localpacklab.com</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── SLIDE 3 ── */
+function C3S3() {
+  const fixes = [
+    {title: 'Match your categories to the search', tag:'RELEVANCE FIX 01', body: 'Use the most specific primary category available. "Pressure Washing Service" outperforms "Contractor" in relevance scoring every time.'},
+    {title: 'Write a keyword-rich description', tag:'RELEVANCE FIX 02', body: 'Your GBP description is indexed. Name your services and the areas you serve — naturally, not stuffed.'},
+  ];
+  return (
+    <div className="c3-slide">
+      <div className="c3-inner">
+        <div className="c3-topbar">
+          <C3Wordmark />
+          <span className="c3-counter">3 / 5</span>
+        </div>
+
+        <div className="c3-section-tag">Moves That Move the Needle</div>
+
+        <div style={{flex:1, display:'flex', flexDirection:'column', justifyContent:'center'}}>
+          {fixes.map((fix, i) => (
+            <div key={i} className="c3-fix">
+              <div className="c3-fix-header">
+                <div className="c3-fix-title">{fix.title}</div>
+                <div className="c3-fix-tag">{fix.tag}</div>
+              </div>
+              <div className="c3-fix-body">{fix.body}</div>
+            </div>
+          ))}
+
+          <div style={{marginTop:'48px', display:'flex', alignItems:'center', justifyContent:'space-between', padding:'0 0 0 4px'}}>
+            <span style={{fontFamily:"'Space Mono', monospace", fontSize:'11px', color:'rgba(244,240,230,0.2)', letterSpacing:'0.1em'}}>MORE ON NEXT SLIDE</span>
+            <span style={{color:'#e8a830', fontSize:'22px'}}>→</span>
+          </div>
+        </div>
+
+        <div className="c3-bottom">
+          <C3Wordmark />
+          <span style={{fontFamily:"'Space Mono', monospace", fontSize:'10px', color:'rgba(244,240,230,0.2)', letterSpacing:'0.14em', textTransform:'uppercase'}}>localpacklab.com</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── SLIDE 4 ── */
+function C3S4() {
+  const fixes = [
+    {title: 'Earn reviews with service keywords', tag:'PROMINENCE FIX 01', body: 'Ask customers to mention what you did — "pressure washed my driveway" is worth more than five stars alone.'},
+    {title: 'Post to GBP at least weekly', tag:'PROMINENCE FIX 02', body: 'Regular posting signals an active, trusted business. Dormant profiles get deprioritized.'},
+    {title: 'Build local citations consistently', tag:'PROMINENCE FIX 03', body: 'Your NAP (name, address, phone) must be identical across Yelp, Angi, BBB, and every directory. Inconsistency erodes trust.'},
+  ];
+  return (
+    <div className="c3-slide">
+      <div className="c3-inner">
+        <div className="c3-topbar">
+          <C3Wordmark />
+          <span className="c3-counter">4 / 5</span>
+        </div>
+
+        <div className="c3-section-tag">Moves That Move the Needle — cont.</div>
+
+        <div style={{flex:1, display:'flex', flexDirection:'column', justifyContent:'center'}}>
+          {fixes.map((fix, i) => (
+            <div key={i} className="c3-fix">
+              <div className="c3-fix-header">
+                <div className="c3-fix-title" style={{fontSize:'34px'}}>{fix.title}</div>
+                <div className="c3-fix-tag">{fix.tag}</div>
+              </div>
+              <div className="c3-fix-body">{fix.body}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="c3-bottom">
+          <C3Wordmark />
+          <span style={{fontFamily:"'Space Mono', monospace", fontSize:'10px', color:'rgba(244,240,230,0.2)', letterSpacing:'0.14em', textTransform:'uppercase'}}>localpacklab.com</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── SLIDE 5 ── */
+function C3S5() {
+  return (
+    <div className="c3-slide">
+      <div className="c3-inner">
+        <div className="c3-topbar">
+          <C3Wordmark />
+          <span className="c3-counter">5 / 5</span>
+        </div>
+
+        <div style={{flex:1, display:'flex', flexDirection:'column', justifyContent:'center'}}>
+          <div className="c3-cta-kicker">Free resource from Local Pack Lab</div>
+
+          <h2 className="c3-cta-headline">
+            Want the full<br/>GBP <em>ranking</em><br/>playbook?
+          </h2>
+
+          <p className="c3-cta-body">
+            We wrote a step-by-step guide for exterior service contractors. Every factor, every fix, with real examples from pressure washing businesses.
+          </p>
+
+          <div className="c3-cta-link">
+            Link in bio → LPL Maps Ranking Guide <span>↗</span>
+          </div>
+        </div>
+
+        <div className="c3-bottom">
+          <C3Wordmark />
+          <span style={{fontFamily:"'Space Mono', monospace", fontSize:'10px', color:'rgba(244,240,230,0.2)', letterSpacing:'0.14em', textTransform:'uppercase'}}>localpacklab.com</span>
+        </div>
+      </div>
+
+      {/* amber glow bottom left */}
+      <div style={{
+        position:'absolute', left:'-200px', bottom:'-200px',
+        width:'600px', height:'600px',
+        borderRadius:'50%',
+        background:'radial-gradient(circle, rgba(232,168,48,0.07) 0%, transparent 70%)',
+        pointerEvents:'none',
+      }}></div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <DesignCanvas title="Local Pack Lab — Carousel 3: Trade Editorial">
+      <DCSection id="c3" title="Google Maps Algorithm Carousel · Forest Green / Amber / Serif · 1080 × 1350">
+        <DCArtboard id="c3s1" label="Slide 1 — Hook" width={1080} height={1350}><C3S1 /></DCArtboard>
+        <DCArtboard id="c3s2" label="Slide 2 — The 3 Factors" width={1080} height={1350}><C3S2 /></DCArtboard>
+        <DCArtboard id="c3s3" label="Slide 3 — Fixes 1–2" width={1080} height={1350}><C3S3 /></DCArtboard>
+        <DCArtboard id="c3s4" label="Slide 4 — Fixes 3–5" width={1080} height={1350}><C3S4 /></DCArtboard>
+        <DCArtboard id="c3s5" label="Slide 5 — CTA" width={1080} height={1350}><C3S5 /></DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
